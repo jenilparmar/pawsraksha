@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
-
+// import logo from './logo.svg';
+import { useState } from "react";
+import "./App.css";
+import StateContext from "./Components/mycontext";
+import Home from "./Components/Home";
+// import Login from "./Components/Login";
+// import SignUp from "./Components/SignUp";
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <StateContext.Provider value={{ setIsLogin }}>
+        {/* {isLogin ? <Login /> : <SignUp />} */}
+        <Home />
+      </StateContext.Provider>
+    </>
   );
 }
 
