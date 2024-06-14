@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import StateContext from "./mycontext";
 
 export default function Main() {
+  const {setIsRescue} = useContext(StateContext);
   return (
     <>
       <center>
@@ -32,7 +34,9 @@ export default function Main() {
           details about the animal's condition and location. Your contribution
           can make a huge difference!
         </p>
-        <div className=" button bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer self-center text-center font-semibold p-2 rounded-lg text-black w-40">
+        <div className=" button bg-blue-400 my-4 border-2 border-black hover:bg-blue-500 cursor-pointer self-center text-center font-semibold p-2 rounded-lg text-black w-40" onClick={()=>{
+          setIsRescue(true)
+        }}>
           Rescue Animal
         </div>
       </div>

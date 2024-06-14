@@ -1,51 +1,110 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios"; // Import Axios for making HTTP requests
 import StateContext from "./mycontext";
 
 export default function SignUp() {
   const { setIsLogin } = useContext(StateContext);
+
+  // State to manage form data
+  const [formData, setFormData] = useState({
+    name: "",
+    Organization_name: "",
+    Location: "",
+    email: "",
+    password: "",
+  });
+
+  // Function to handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Send form data to the server using Axios
+    axios.post("http://localhost:3001/AddLoginData", formData)
+      .then((response) => {
+        console.log("Form Data Submitted:", response.data);
+        // Optionally, handle success or navigate to another page
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+        // Handle error (show message to the user, retry logic, etc.)
+      });
+  };
+
   return (
     <>
-    <div className="cat"></div>
-
-      <center className="h-screen bg-slate-100 w-screen flex flex-col justify-center">
-        <div className="w-60 h-80 z-10 bg-slate-200 flex flex-col justify-center gap-3 rounded-md  self-center border-2 border-blue-400">
-          <div className="text-2xl font-bold p-2 ">SingUp</div>
-          <input
-            type="text"
-            placeholder="Name"
-            required
-            className="bg-stale-100 rounded-md w-11/12 self-center h-7 active:bg-slate-200 active:text-sm placeholder:p-3"
-          />
-              <input
+      <div className="cat"></div>
+      <center className="h-screen bg-slate-100 flex flex-col justify-center items-center">
+        <div className="w-80 h-auto z-10 bg-white flex flex-col border-2 border-blue-400 justify-center gap-4 rounded-md self-center shadow-lg p-6">
+          <div className="text-3xl font-bold text-gray-800 mb-4">Sign Up</div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <input
               type="text"
-              placeholder="Organisation name"
+              placeholder="Name"
+              name="name"
               required
-              className="bg-stale-100 rounded-md w-11/12 self-center h-7 active:bg-slate-200 active:text-sm placeholder:p-3"
+              value={formData.name}
+              onChange={handleChange}
+              className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
             />
-           <input
-            type="email"
-            placeholder="Email"
-            required
-            className="bg-stale-100 rounded-md w-11/12 self-center h-7 active:bg-slate-200 active:text-sm placeholder:p-3"
-          />
-           <input
-            type="password"
-            placeholder="Password"
-            required
-            className="bg-stale-100 rounded-md w-11/12 self-center h-7 active:bg-slate-200 active:text-sm placeholder:p-3"
-          />
-          <button className="w-11/12 self-center p-2  text-white hover:bg-blue-500 bg-blue-400 rounded-lg">
-            Signup
-          </button>
-          <div className="text-nowrap flex text-sm self-center">
+            <input
+              type="text"
+              placeholder="Organization Name"
+              name="Organization_name"
+              required
+              value={formData.Organization_name}
+              onChange={handleChange}
+              className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+            />
+            <input
+              type="text"
+              placeholder="Location"
+              name="Location"
+              required
+              value={formData.Location}
+              onChange={handleChange}
+              className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+            />
+            <button type="submit" className="py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300">
+              Sign Up
+            </button>
+          </form>
+          <div className="text-sm text-center mt-2">
             Already have an account?{" "}
-            <p
-              className="text-blue-400 hover:text-blue-500 hover:cursor-pointer mx-1"
+            <span
+              className="text-blue-500 hover:text-blue-600 hover:cursor-pointer"
               onClick={() => {
                 setIsLogin(true);
-              }}>
-              login
-            </p>
+              }}
+            >
+              Log In
+            </span>
           </div>
         </div>
       </center>
