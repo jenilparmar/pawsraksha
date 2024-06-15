@@ -12,22 +12,46 @@ export default function Rescue() {
     notes: "",
   });
 
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
-    // console.log("Updated Form Data:", formData); // Debug log to check form data update
+  };
+
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const newImages = Array.from(files);
+
+    setImages((prevImages) => [...prevImages, ...newImages]);
+
+    const previews = newImages.map((file) => URL.createObjectURL(file));
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("Form Data Submitted:", formData);
+
+    const formDataWithImages = new FormData();
+    for (const key in formData) {
+      formDataWithImages.append(key, formData[key]);
+    }
+
+    images.forEach((image) => {
+      formDataWithImages.append("images", image);
+    });
+
     axios({
       url: "http://localhost:3001/submitRescueForm",
       method: "POST",
-      data: formData,
+      data: formDataWithImages,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     }).then((data) => {
       console.log(data);
     });
@@ -37,19 +61,49 @@ export default function Rescue() {
     <center>
       <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center">
         <div className="w-9/12 h-9/12 flex flex-col items-center justify-center">
-          <i
-            className="fa-regular text-gray-700 fa-image"
-            style={{ fontSize: "15em" }}
-          ></i>
-          <div className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
-            Add photo
+          <p className="font-semibold p-3 w-screen text-sm text-red-600 md:w-11/12">
+            Please upload a photo of the injured animal and include a picture of
+            the location where you found it or any nearby landmarks for
+            reference. This will help us assess the situation more accurately.
+          </p>
+          {imagePreviews.length == 0 ? (
+            <i
+              className="fa-regular text-gray-700 fa-image"
+              style={{ fontSize: "15em" }}></i>
+          ) : undefined}
+          <div className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-56 mt-4">
+            <div id="flex flex-row gap-2 bg-red-500">
+              {imagePreviews.map((preview, index) => (
+                <div>
+                  <img
+                    key={index}
+                    src={preview}
+                    alt={`Image Preview ${index}`}
+                    className="w-full h-auto"
+                  />
+                </div>
+              ))}
+            </div>
+            <input
+              type="file"
+              id="choose-file"
+              name="choose-file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+              multiple // Allow multiple file selection
+            />
+            <label
+              htmlFor="choose-file"
+              className="cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
+              Choose File
+            </label>
           </div>
         </div>
         {/* Form Section */}
         <form
           className="form w-9/12 flex flex-col items-center my-4"
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           <h2 className="text-2xl text-blue-400 font-bold my-3">
             Animal Information
           </h2>
@@ -65,8 +119,7 @@ export default function Rescue() {
                 className="w-full h-10 bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.animalType}
-                onChange={handleChange}
-              >
+                onChange={handleChange}>
                 <option value="cat">Cat</option>
                 <option value="dog">Dog</option>
                 <option value="bird">Bird</option>
@@ -84,8 +137,7 @@ export default function Rescue() {
                 className="w-full bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.description}
-                onChange={handleChange}
-              ></textarea>
+                onChange={handleChange}></textarea>
             </div>
           </div>
 
@@ -163,13 +215,11 @@ export default function Rescue() {
               rows="4"
               className="w-full bg-slate-300 indent-4 border-2 border-blue-500 rounded-md"
               value={formData.notes}
-              onChange={handleChange}
-            ></textarea>
+              onChange={handleChange}></textarea>
           </div>
           <button
             type="submit"
-            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
-          >
+            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
             Submit
           </button>
         </form>
