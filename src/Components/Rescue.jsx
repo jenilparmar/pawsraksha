@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function Rescue() {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     animalType: "cat",
     description: "",
     location: "",
@@ -10,8 +10,9 @@ export default function Rescue() {
     contactName: "",
     contactPhone: "",
     notes: "",
-  });
+  };
 
+  const [formData, setFormData] = useState(initialFormData);
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -46,15 +47,24 @@ export default function Rescue() {
     });
 
     axios({
-      url: "http://localhost:3001/submitRescueForm",
+      url: "https://pawsraksha-1.onrender.com/submitRescueForm",
       method: "POST",
       data: formDataWithImages,
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }).then((data) => {
-      console.log(data);
-    });
+    })
+      .then((data) => {
+        console.log(data);
+        // Reset form fields after successful submission
+        setFormData(initialFormData);
+        setImages([]);
+        setImagePreviews([]);
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+        // Handle error if needed
+      });
   };
 
   return (
@@ -66,44 +76,47 @@ export default function Rescue() {
             the location where you found it or any nearby landmarks for
             reference. This will help us assess the situation more accurately.
           </p>
-          {imagePreviews.length == 0 ? (
+          {imagePreviews.length === 0 ? (
             <i
               className="fa-regular text-gray-700 fa-image"
-              style={{ fontSize: "15em" }}></i>
-          ) : undefined}
-          <div className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-56 mt-4">
-            <div id="flex flex-row gap-2 bg-red-500">
-              {imagePreviews.map((preview, index) => (
-                <div>
-                  <img
-                    key={index}
-                    src={preview}
-                    alt={`Image Preview ${index}`}
-                    className="w-full h-auto"
-                  />
-                </div>
-              ))}
+              style={{ fontSize: "15em" }}
+            ></i>
+          ) : (
+            <div className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-56 mt-4">
+              <div className="flex flex-row gap-2">
+                {imagePreviews.map((preview, index) => (
+                  <div key={index}>
+                    <img
+                      src={preview}
+                      alt={`Image Preview ${index}`}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                ))}
+              </div>
+              <input
+                type="file"
+                id="choose-file"
+                name="choose-file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+                multiple // Allow multiple file selection
+              />
+              <label
+                htmlFor="choose-file"
+                className="cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
+              >
+                Choose File
+              </label>
             </div>
-            <input
-              type="file"
-              id="choose-file"
-              name="choose-file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-              multiple // Allow multiple file selection
-            />
-            <label
-              htmlFor="choose-file"
-              className="cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
-              Choose File
-            </label>
-          </div>
+          )}
         </div>
         {/* Form Section */}
         <form
           className="form w-9/12 flex flex-col items-center my-4"
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           <h2 className="text-2xl text-blue-400 font-bold my-3">
             Animal Information
           </h2>
@@ -119,7 +132,8 @@ export default function Rescue() {
                 className="w-full h-10 bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.animalType}
-                onChange={handleChange}>
+                onChange={handleChange}
+              >
                 <option value="cat">Cat</option>
                 <option value="dog">Dog</option>
                 <option value="bird">Bird</option>
@@ -137,7 +151,8 @@ export default function Rescue() {
                 className="w-full bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.description}
-                onChange={handleChange}></textarea>
+                onChange={handleChange}
+              ></textarea>
             </div>
           </div>
 
@@ -215,11 +230,13 @@ export default function Rescue() {
               rows="4"
               className="w-full bg-slate-300 indent-4 border-2 border-blue-500 rounded-md"
               value={formData.notes}
-              onChange={handleChange}></textarea>
+              onChange={handleChange}
+            ></textarea>
           </div>
           <button
             type="submit"
-            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
+            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
+          >
             Submit
           </button>
         </form>

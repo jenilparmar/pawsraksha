@@ -3,10 +3,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const multer = require("multer");
 const { MongoClient } = require("mongodb");
-
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
 const port = 3001;
-const url = "mongodb+srv://jenilparmar:dsfkjnksdfaa@cluster0.utm2zr0.mongodb.net/";
+
 const dbName = "AnimalRescue";
 let db;
 
@@ -18,7 +19,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname); // Unique filename for each uploaded image
   },
 });
-
+const url  = process.env.url;
 const upload = multer({ storage: storage });
 
 MongoClient.connect(url).then((client) => {
@@ -33,7 +34,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:3000", // Allow requests from React app running on localhost:3000
+      "http://localhost:3000",'https://pawsraksha.vercel.app/' // Allow requests from React app running on localhost:3000
     ],
     methods: ["POST", "GET"],
     credentials: true,
