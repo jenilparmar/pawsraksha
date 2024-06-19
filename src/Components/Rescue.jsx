@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,setErrorMessage} from "react";
 import axios from "axios";
 
 export default function Rescue() {
@@ -36,38 +36,52 @@ export default function Rescue() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     const formDataWithImages = new FormData();
     for (const key in formData) {
       formDataWithImages.append(key, formData[key]);
     }
-
+  
     images.forEach((image) => {
       formDataWithImages.append("images", image);
     });
-
+  
+    console.log("Submitting form data:", formDataWithImages);
+  
     axios({
-      url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-      // url:"http://localhost:3001/submitRescueForm",
+      url: "https://cors-anywhere.herokuapp.com/https://pawsraksha-1.onrender.com/submitRescueForm",
       method: "POST",
       data: formDataWithImages,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then((data) => {
-        console.log(data);
+      .then((response) => {
+        console.log(response.data);
         // Reset form fields after successful submission
         setFormData(initialFormData);
         setImages([]);
         setImagePreviews([]);
+        setErrorMessage(""); // Clear any previous error messages
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
-        // Handle error if needed
+        setErrorMessage(error.message); // Set error message to display it to the user
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          console.error("Server error response:", error.response.data);
+          setErrorMessage(error.response.data.message || "Server error");
+        } else if (error.request) {
+          // Request was made but no response was received
+          console.error("No response received:", error.request);
+          setErrorMessage("No response from server");
+        } else {
+          // Something else happened while setting up the request
+          console.error("Error setting up request:", error.message);
+          setErrorMessage("Error setting up request");
+        }
       });
   };
-
   return (
     <center>
       <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center">
