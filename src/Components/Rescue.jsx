@@ -47,7 +47,8 @@ export default function Rescue() {
     });
 
     axios({
-      url: "https://pawsraksha-1.onrender.com/submitRescueForm",
+      // url: "https://pawsraksha-1.onrender.com/submitRescueForm",
+      url:"http://localhost:3001/submitRescueForm",
       method: "POST",
       data: formDataWithImages,
       headers: {
@@ -94,23 +95,23 @@ export default function Rescue() {
                   </div>
                 ))}
               </div>
-              <input
-                type="file"
-                id="choose-file"
-                name="choose-file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-                multiple // Allow multiple file selection
-              />
-              <label
-                htmlFor="choose-file"
-                className="cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
-              >
-                Choose File
-              </label>
             </div>
           )}
+          <input
+            type="file"
+            id="choose-file"
+            name="choose-file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+            multiple
+          />
+          <label
+            htmlFor="choose-file"
+            className="cursor-pointer bg-blue-400 border-2 border-black hover:bg-blue-500 text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
+          >
+            Choose File
+          </label>
         </div>
         {/* Form Section */}
         <form
