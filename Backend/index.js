@@ -67,8 +67,31 @@ app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
       console.error(error);
       res.status(500).send(error);
     });
+    
 });
+app.get("/ShowData",(req,res)=>{
 
+  db.collection("AnimalInNeed")
+  .find({}).toArray()
+  .then((data)=>{
+    res.send(data);
+  })
+  .catch(e=>{
+    res.send(e);
+  })
+
+})
+app.get("/GetOrganizations",(req,res)=>{
+  db.collection("UserData")
+  .find({})
+  .toArray()
+  .then(data=>{
+    res.send(data);
+  })
+  .catch(e=>{
+    res.send(e);
+  })
+})
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

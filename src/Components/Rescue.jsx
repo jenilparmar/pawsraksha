@@ -46,26 +46,52 @@ export default function Rescue() {
       formDataWithImages.append("images", image);
     });
 
-    axios({
-      url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-      // url:"http://localhost:3001/submitRescueForm",
-      method: "POST",
-      data: formDataWithImages,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((data) => {
-        console.log(data);
-        // Reset form fields after successful submission
-        setFormData(initialFormData);
-        setImages([]);
-        setImagePreviews([]);
+    function BackendSite(params) {
+      axios({
+        url: "https://pawsraksha-1.onrender.com/submitRescueForm",
+    
+        method: "POST",
+        data: formDataWithImages,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-        // Handle error if needed
-      });
+        .then((data) => {
+          console.log(data);
+          // Reset form fields after successful submission
+          setFormData(initialFormData);
+          setImages([]);
+          setImagePreviews([]);
+        })
+        .catch((error) => {
+        console.log(error);
+          // Handle error if needed
+        });
+    }
+    function LocalHost(params) {
+      axios({
+        // url: "https://pawsraksha-1.onrender.com/submitRescueForm",
+        url:"http://localhost:3001/submitRescueForm",
+        method: "POST",
+        data: formDataWithImages,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((data) => {
+          console.log(data);
+          // Reset form fields after successful submission
+          setFormData(initialFormData);
+          setImages([]);
+          setImagePreviews([]);
+        })
+        .catch((error) => {
+          BackendSite()
+          // Handle error if needed
+        });
+    }
+  
+  
   };
 
   return (
@@ -89,7 +115,7 @@ export default function Rescue() {
                   <div key={index}>
                     <img
                       src={preview}
-                      alt={`Image Preview ${index}`}
+                      // alt={`Image Preview ${index}`}
                       className="w-full h-auto"
                     />
                   </div>
