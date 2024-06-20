@@ -69,6 +69,9 @@ app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
     });
     
 });
+app.get("/env",(req,res)=>{
+  res.send(process.env.UPIID);
+})
 app.get("/ShowData",(req,res)=>{
 
   db.collection("AnimalInNeed")
