@@ -47,6 +47,12 @@ export default function Story() {
         </div>
           </div>
         </div>
+        <div className='font-medium p-3 -my-2'>
+    Contact Us:
+    For more information on how you can help, email us at <a href="mailto:jenilparmar94091@gmail.com" className='text-blue-400 hover:text-blue-500'>
+      jenilparmar94091@gmail.com
+      </a>.
+    </div>
       </center>
     </>
   );

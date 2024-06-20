@@ -12,8 +12,8 @@ export default function Home() {
       {!isRescue ? (
         <>
           <Main />
-          <Story />
           <Donate />
+          <Story />
         </>
       ) : (
         <Rescue />

@@ -69,6 +69,17 @@ app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
     });
     
 });
+app.post("/PaymentInfo",(req,res)=>{
+  const formData = req.body;
+  db.collection("Donations")
+  .insertOne(formData)
+  .then(data=>{
+    res.send(data)
+  })
+  .catch(e=>{
+    res.send(e)
+  })
+})
 app.get("/env",(req,res)=>{
   res.send(process.env.UPIID);
 })
