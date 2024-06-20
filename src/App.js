@@ -14,12 +14,13 @@ function App() {
   console.log(isLogin);
   const [isRescue , setIsRescue] = useState(false);
   console.log(process.env.UPIID);
+  const [donate , setDonate] = useState(true)
   return (
     <>
-      <StateContext.Provider value={{ setIsLogin ,isRescue ,setIsRescue }}>
+      <StateContext.Provider value={{ setIsLogin ,isRescue ,setIsRescue ,setDonate }}>
         {/* {isLogin ? <Login /> : <SignUp />} */}
-        {/* <Home /> */}
-  <Donation/>
+        {donate?<Home />:
+  <Donation/>}
       </StateContext.Provider>
     </>
   );

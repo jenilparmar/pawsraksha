@@ -45,53 +45,27 @@ export default function Rescue() {
     images.forEach((image) => {
       formDataWithImages.append("images", image);
     });
-
-    function BackendSite(params) {
-      axios({
-        url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-    
-        method: "POST",
-        data: formDataWithImages,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then((data) => {
-          console.log(data);
-          // Reset form fields after successful submission
-          setFormData(initialFormData);
-          setImages([]);
-          setImagePreviews([]);
-        })
-        .catch((error) => {
-        console.log(error);
-          // Handle error if needed
-        });
-    }
-    function LocalHost(params) {
-      axios({
-        // url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-        url:"https://pawsraksha-1.onrender.com/submitRescueForm",
-        method: "POST",
-        data: formDataWithImages,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then((data) => {
-          console.log(data);
-          // Reset form fields after successful submission
-          setFormData(initialFormData);
-          setImages([]);
-          setImagePreviews([]);
-        })
-        .catch((error) => {
-          BackendSite()
-          // Handle error if needed
-        });
-    }
+    // alert("HI")
+    axios({
+      url: "https://pawsraksha-1.onrender.com/submitRescueForm",
   
-  
+      method: "POST",
+      data: formDataWithImages,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+      .then((data) => {
+        console.log(data);
+        // Reset form fields after successful submission
+        setFormData(initialFormData);
+        setImages([]);
+        setImagePreviews([]);
+      })
+      .catch((error) => {
+      alert("Sorry for Inconvenience Please fill the Form again!!")
+        // Handle error if needed
+      });
   };
 
   return (
