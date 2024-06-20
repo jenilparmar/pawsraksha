@@ -71,7 +71,7 @@ export default function Rescue() {
     function LocalHost(params) {
       axios({
         // url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-        url:"http://localhost:3001/submitRescueForm",
+        url:"https://pawsraksha-1.onrender.com/submitRescueForm",
         method: "POST",
         data: formDataWithImages,
         headers: {

@@ -25,13 +25,13 @@ export default function Main() {
   }
   function LocalHost(params) {
     axios
-      .get("http://localhost:3001/ShowData")
+      .get("https://pawsraksha-1.onrender.com/ShowData")
       .then((res) => setGoodHumen(res.data.length))
       .catch((e) => {
         BackendSite();
       });
       axios
-      .get("http://localhost:3001/GetOrganizations")
+      .get("https://pawsraksha-1.onrender.com/GetOrganizations")
       .then(res=>{
         setOrganizationCount(res.data.length);
       })
