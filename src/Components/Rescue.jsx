@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import LocationGuider from "./LocationGuider";
 
 export default function Rescue() {
   const initialFormData = {
@@ -15,7 +16,12 @@ export default function Rescue() {
   const [formData, setFormData] = useState(initialFormData);
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
-
+  const [locationGauiderON, setLocationGauiderON] = useState(false);
+ let countOfLocation = 0;
+ useEffect(()=>{
+  console.log(countOfLocation);
+countOfLocation+=countOfLocation+1;
+ },[locationGauiderON])
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -48,13 +54,14 @@ export default function Rescue() {
     // alert("HI")
     axios({
       url: "https://pawsraksha-1.onrender.com/submitRescueForm",
-  
+
       method: "POST",
       data: formDataWithImages,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
+
       .then((data) => {
         console.log(data);
         // Reset form fields after successful submission
@@ -63,13 +70,14 @@ export default function Rescue() {
         setImagePreviews([]);
       })
       .catch((error) => {
-      alert("Sorry for Inconvenience Please fill the Form again!!")
+        alert("Sorry for Inconvenience Please fill the Form again!!");
         // Handle error if needed
       });
   };
 
   return (
     <center>
+      {locationGauiderON && countOfLocation==0 ? <LocationGuider setLocationGauiderON={setLocationGauiderON}/> : undefined}
       <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center">
         <div className="w-9/12 h-9/12 flex flex-col items-center justify-center">
           <p className="font-semibold p-3 w-screen text-sm text-red-600 md:w-11/12">
@@ -80,8 +88,7 @@ export default function Rescue() {
           {imagePreviews.length === 0 ? (
             <i
               className="fa-regular text-gray-700 fa-image"
-              style={{ fontSize: "15em" }}
-            ></i>
+              style={{ fontSize: "15em" }}></i>
           ) : (
             <div className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-56 mt-4">
               <div className="flex flex-row gap-2">
@@ -108,16 +115,14 @@ export default function Rescue() {
           />
           <label
             htmlFor="choose-file"
-            className="cursor-pointer bg-blue-400 border-2 border-black hover:bg-blue-500 text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
-          >
+            className="cursor-pointer bg-blue-400 border-2 border-black hover:bg-blue-500 text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
             Choose File
           </label>
         </div>
         {/* Form Section */}
         <form
           className="form w-9/12 flex flex-col items-center my-4"
-          onSubmit={handleSubmit}
-        >
+          onSubmit={handleSubmit}>
           <h2 className="text-2xl text-blue-400 font-bold my-3">
             Animal Information
           </h2>
@@ -133,8 +138,7 @@ export default function Rescue() {
                 className="w-full h-10 bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.animalType}
-                onChange={handleChange}
-              >
+                onChange={handleChange}>
                 <option value="cat">Cat</option>
                 <option value="dog">Dog</option>
                 <option value="bird">Bird</option>
@@ -152,8 +156,7 @@ export default function Rescue() {
                 className="w-full bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.description}
-                onChange={handleChange}
-              ></textarea>
+                onChange={handleChange}></textarea>
             </div>
           </div>
 
@@ -162,15 +165,25 @@ export default function Rescue() {
               <label htmlFor="location" className="block mb-2">
                 Location
               </label>
-              <input
+         <div>
+         <input
                 type="text"
                 id="location"
                 name="location"
+                placeholder="Paste Copied Location"
                 className="w-full h-10 bg-slate-300 border-2 border-blue-500 rounded-md"
                 required
                 value={formData.location}
                 onChange={handleChange}
-              />
+                onClick={()=>{
+                  
+                }}
+                />
+              <div className="active:text-red-500 text-blue-500 text-sm"     onClick={() => {
+                setLocationGauiderON(true);
+                  // alert(locationGauiderON)
+                }}>Get Location</div>
+         </div>
             </div>
             <div className="w-full md:w-5/12 mb-4 md:mb-0">
               <label htmlFor="dateFound" className="block mb-2">
@@ -231,13 +244,11 @@ export default function Rescue() {
               rows="4"
               className="w-full bg-slate-300 indent-4 border-2 border-blue-500 rounded-md"
               value={formData.notes}
-              onChange={handleChange}
-            ></textarea>
+              onChange={handleChange}></textarea>
           </div>
           <button
             type="submit"
-            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4"
-          >
+            className="bg-blue-400 border-2 border-black hover:bg-blue-500 cursor-pointer text-center font-semibold p-2 rounded-lg text-black w-40 mt-4">
             Submit
           </button>
         </form>

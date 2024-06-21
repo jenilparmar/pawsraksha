@@ -5,6 +5,7 @@ import axios from "axios";
 export default function Main() {
   const [goodHumen, setGoodHumen] = useState(0);
   const [organizationCount,setOrganizationCount] = useState(0);
+  const [donate,setDonater] = useState(0);
   function BackendSite(params) {
     axios
       .get("https://pawsraksha-1.onrender.com/ShowData")
@@ -68,7 +69,7 @@ export default function Main() {
             </div>
             <div className="  w-36 h-40 flex flex-col justify-center">
               <div className="text-8xl font-bold text-center self-center">
-                00
+               {donate}
               </div>
               <div className="text-xl font-semibold text-center text-nowrap">
                 Animals Rescued

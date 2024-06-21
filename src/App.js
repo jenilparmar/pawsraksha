@@ -4,6 +4,7 @@ import "./App.css";
 import StateContext from "./Components/mycontext";
 import Home from "./Components/Home";
 import Donation from "./Components/Donation";
+// import GetLocation from "./Components/GetLocation";
 // const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 // dotenv.config();
 // import Login from "./Components/Login";
@@ -21,6 +22,7 @@ function App() {
         {/* {isLogin ? <Login /> : <SignUp />} */}
         {donate?<Home />:
   <Donation/>}
+
       </StateContext.Provider>
     </>
   );

@@ -80,6 +80,17 @@ app.post("/PaymentInfo",(req,res)=>{
     res.send(e)
   })
 })
+app.get("/GetDonators",(req,res)=>{
+  db.collection("Donations")
+  .find({})
+  .toArray()
+  .then(data=>{
+    res.send(data)
+  })
+  .catch(e=>{
+    res.send(e);
+  })
+})
 app.get("/env",(req,res)=>{
   res.send(process.env.UPIID);
 })
