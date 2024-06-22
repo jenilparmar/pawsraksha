@@ -3,7 +3,7 @@ import axios from "axios"; // Import Axios for making HTTP requests
 import StateContext from "./mycontext";
 
 export default function SignUp() {
-  const { setIsLogin } = useContext(StateContext);
+  const { setIsLogin,setAuthenticated} = useContext(StateContext);
 
   // State to manage form data
   const [formData, setFormData] = useState({
@@ -116,7 +116,7 @@ export default function SignUp() {
               onChange={handleChange}
               className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
             />
-            <button type="submit" className="py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300">
+            <button type="submit" className="py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition duration-300" onClick={()=>{setAuthenticated(true)}}>
               Sign Up
             </button>
           </form>

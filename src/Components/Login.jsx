@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import StateContext from "./mycontext";
 
 export default function Login() {
-  const { setIsLogin } = useContext(StateContext);
+  const { setIsLogin ,setAuthenticated } = useContext(StateContext);
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function Login() {
               className="bg-gray-100 rounded-md w-full h-10 px-3 focus:outline-none focus:bg-slate-200 focus:text-sm"
             />
           </div>
-          <button className="w-full p-2 text-white bg-blue-400 hover:bg-blue-500 rounded-lg transition duration-300">
+          <button className="w-full p-2 text-white bg-blue-400 hover:bg-blue-500 rounded-lg transition duration-300" onClick={()=>{setAuthenticated(true)}} >
             Login
           </button>
           <div className="text-sm text-center mt-2">
@@ -42,7 +42,7 @@ export default function Login() {
         <div className="bg-slate-200 font-semibold font-serif p-2 border-2 border-blue-400 rounded-md my-3">
         No need to Login or Signup if you only want to upload images of injured animals. 
         <br />
-        <button className="bg-blue-400 rounded-lg w-28 font-sarif font-medium text-white my-2 p-1  hover:bg-blue-500" >Home Page</button>
+        <button className="bg-blue-400 rounded-lg w-28 font-sarif font-medium text-white my-2 p-1  hover:bg-blue-500" onClick={()=>{setAuthenticated(true)}}>Home Page</button>
         </div>
       </center>
     </>
