@@ -4,11 +4,12 @@ import "./App.css";
 import StateContext from "./Components/mycontext";
 import Home from "./Components/Home";
 import Donation from "./Components/Donation";
+import GetLoxation from "./Components/GetLoxation";
 // import GetLocation from "./Components/GetLocation";
 // const dotenv = require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 // dotenv.config();
-// import Login from "./Components/Login";
-// import SignUp from "./Components/SignUp";
+import Login from "./Components/Login";
+import SignUp from "./Components/SignUp";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -19,10 +20,10 @@ function App() {
   return (
     <>
       <StateContext.Provider value={{ setIsLogin ,isRescue ,setIsRescue ,setDonate }}>
-        {/* {isLogin ? <Login /> : <SignUp />} */}
-        {donate?<Home />:
-  <Donation/>}
-
+        {isLogin ? <Login /> : <SignUp />}
+        {/* {donate?<Home />:
+  <Donation/>} */}
+{/* <GetLoxation/> */}
       </StateContext.Provider>
     </>
   );

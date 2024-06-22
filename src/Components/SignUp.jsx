@@ -12,6 +12,8 @@ export default function SignUp() {
     Location: "",
     email: "",
     password: "",
+    mobile1: "",
+    mobile2: "",
   });
 
   // Function to handle input change
@@ -64,15 +66,38 @@ export default function SignUp() {
               onChange={handleChange}
               className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
             />
+              <input
+                type="tel"
+                placeholder="Mobile Number 1"
+                name="mobile1"
+                required
+                value={formData.mobile1}
+                onChange={handleChange}
+                className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+              />
+              <input
+                type="tel"
+                placeholder="Mobile Number 2"
+                name="mobile2"
+                required
+                value={formData.mobile2}
+                onChange={handleChange}
+                className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
+              />
             <input
               type="text"
-              placeholder="Location"
+              placeholder="Share current Location Link"
               name="Location"
               required
               value={formData.Location}
               onChange={handleChange}
               className="bg-gray-100 border border-gray-300 rounded-md h-10 px-3 focus:outline-none focus:border-blue-400"
             />
+            <div className="text-blue-500 text-sm text-left mx-2 -my-1" onClick={()=>
+              {
+                window.open("https://www.google.com/maps")
+              }
+            }>Get Location</div>
             <input
               type="email"
               placeholder="Email"
