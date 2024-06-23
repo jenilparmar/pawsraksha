@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import StateContext from "./mycontext";
 import axios from "axios";
 
-export default function Main() {
+export default function Main({setDeshBoard}) {
   const [goodHumans, setGoodHumans] = useState(0);
   const [organizationCount, setOrganizationCount] = useState(0);
   const [donate, setDonate] = useState(0);
@@ -26,7 +26,12 @@ export default function Main() {
   const { setIsRescue } = useContext(StateContext);
 
   return (
+
     <div className="container mx-auto p-4 md:p-0">
+      <i class="fa-regular fa-keyboard absolute right-8 top-5 text-black bg-blue-500 w-14 text-center rounded-lg text-4xl" onClick={()=>{
+        setDeshBoard(true)
+        // alert(true)
+      }}></i>
       <div className="text-center">
         <div className="flex flex-col gap-6 md:flex-row md:justify-center">
         <div className="w-80 h-40 flex flex-col justify-center bg-gray-200 rounded-lg shadow-md p-4">
