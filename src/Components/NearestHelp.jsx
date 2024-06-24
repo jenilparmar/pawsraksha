@@ -10,15 +10,16 @@ export default function NearestHelp({setNear ,location }) {
   const [nearestHelper, setNearestHelper] = useState([]);
   const [animalCor , setAnimalCor] = useState({})
   useEffect(()=>{
-    // alert(formData['location'])
-    console.log(location);
+    // alert(location)
+    // console.log(location);
     axios({
-      url: `https://unshorten.me/json/${'https://maps.app.goo.gl/mHNHYJR5PdRGxLMW6'}`,
+      url: `https://unshorten.me/json/${location}`,
       method: "GET",
     })
     .then((res) => {
       if (res.data && res.data.resolved_url) {
         const expandedUrl = res.data.resolved_url;
+        alert(expandedUrl)
         setAnimalCor(extractCoordinates(expandedUrl))
       } else {
         throw new Error("URL expansion failed");

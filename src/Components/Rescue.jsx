@@ -22,7 +22,7 @@ export default function Rescue() {
   const [near , setNear] = useState(false)
  let countOfLocation = 0;
  useEffect(()=>{
-  console.log(countOfLocation);
+  // console.log(countOfLocation);
 countOfLocation+=countOfLocation+1;
  },[locationGauiderON])
   const handleChange = (e) => {
@@ -31,6 +31,7 @@ countOfLocation+=countOfLocation+1;
       ...prevFormData,
       [name]: value,
     }));
+    if(name==="location") setLocation(value)
   };
 
   const handleImageChange = (e) => {
@@ -50,7 +51,7 @@ countOfLocation+=countOfLocation+1;
     for (const key in formData) {
       formDataWithImages.append(key, formData[key]);
     }
-    setLocation(formDataWithImages['location'])
+    // setLocation(formDataWithImages['location'])
     images.forEach((image) => {
       formDataWithImages.append("images", image);
     });
@@ -69,7 +70,8 @@ countOfLocation+=countOfLocation+1;
         console.log(data);
         // Reset form fields after successful submission
         setFormData(initialFormData);
-        setLocation(formDataWithImages.location)
+        // setLocation(formDataWithImages.location)
+        // alert(location)
         setImages([]);
         setImagePreviews([]);
         setNear(true)
@@ -82,7 +84,8 @@ countOfLocation+=countOfLocation+1;
 
   return (
     <center>
-      {near?<NearestHelp setNear={setNear} formData = {formData}/> : undefined};
+      {near?<NearestHelp setNear={setNear} location = {location}/> : 
+     <>
       {locationGauiderON && countOfLocation==0 ? <LocationGuider setLocationGauiderON={setLocationGauiderON}/> : undefined}
       <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center">
         <div className="w-9/12 h-9/12 flex flex-col items-center justify-center">
@@ -257,6 +260,9 @@ countOfLocation+=countOfLocation+1;
           </button>
         </form>
       </div>
-    </center>
+  
+     </>
+     }
+     </center>
   );
 }
