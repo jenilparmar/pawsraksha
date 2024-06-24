@@ -8,7 +8,7 @@ export default function NearestHelp({ location }) {
   const [distanceArray, setDistanceArray] = useState([]);
   const [organization, setOrganization] = useState([]);
   const [nearestHelper, setNearestHelper] = useState([]);
-  const [animalCor, setAnimalCor] = useState({});
+  // const [animalCor, setAnimalCor] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [coords, setCoords] = useState({ latitude: null, longitude: null });
@@ -36,27 +36,27 @@ export default function NearestHelp({ location }) {
     return () => geo.clearWatch(watcher);
   }, []);
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (location) {
-      axios({
-        url: `https://unshorten.me/json/${location}`,
-        method: "GET",
-      })
-        .then((res) => {
-          if (res.data && res.data.resolved_url) {
-            const expandedUrl = res.data.resolved_url;
-            setAnimalCor(extractCoordinates(expandedUrl));
-          } else {
-            throw new Error("URL expansion failed");
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-          setError("Failed to expand URL. Please try again.");
-        });
-    }
-  }, [location]);
+  //   if (location) {
+  //     axios({
+  //       url: `https://unshorten.me/json/${location}`,
+  //       method: "GET",
+  //     })
+  //       .then((res) => {
+  //         if (res.data && res.data.resolved_url) {
+  //           const expandedUrl = res.data.resolved_url;
+  //           setAnimalCor(extractCoordinates(expandedUrl));
+  //         } else {
+  //           throw new Error("URL expansion failed");
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         console.error(e);
+  //         setError("Failed to expand URL. Please try again.");
+  //       });
+  //   }
+  // }, [location]);
 
   const handleLocation = (url) => {
     return axios({
@@ -159,13 +159,13 @@ export default function NearestHelp({ location }) {
   }, [expandedURLs]);
 
   useEffect(() => {
-    if (coordinateArray.length !== 0 && animalCor.latitude && animalCor.longitude) {
+    if (coordinateArray.length !== 0 && coords.latitude && coords.longitude) {
       const newDistances = coordinateArray.map((coord) =>
         haversine(coord.latitude, coord.longitude, coords.latitude, coords.longitude)
       );
       setDistanceArray(newDistances);
     }
-  }, [coordinateArray, animalCor]);
+  }, [coordinateArray, coords]);
 
   useEffect(() => {
     if (distanceArray.length !== 0) {
@@ -178,7 +178,7 @@ export default function NearestHelp({ location }) {
             distance: distanceArray[index],
           }));
           sortedHelpers.sort((a, b) => a.distance - b.distance);
-          setNearestHelper(sortedHelpers.filter((helper) => helper.distance <= 10));
+          setNearestHelper(sortedHelpers.filter((helper) => helper.distance <= 1000));
           setLoading(false);
         })
         .catch((e) => {
