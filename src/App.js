@@ -32,10 +32,9 @@ function App() {
       <StateContext.Provider
         value={{ setIsLogin, setAuthenticated, isRescue, isLogin, setIsRescue, setDonate, donate }}
       >
-        {!false ? <AuthenticationPage /> : <Home  />}
-        {/* {!Authenticated ? <AuthenticationPage /> : <Home  />}
-        {!Authenticated ? <AuthenticationPage /> : <Home  />} */}
-        {/* <NearestHelp/> */}
+        {/* {!false ? <AuthenticationPage /> : <Home  />} */}
+        {/* {!Authenticated ? <Authe  nticationPage /> : <Home  />} */}
+        <NearestHelp/>
       </StateContext.Provider>
     </> 
   );
