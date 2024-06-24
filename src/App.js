@@ -4,6 +4,7 @@ import StateContext from "./Components/mycontext";
 import Home from "./Components/Home";
 import AuthenticationPage from "./Components/AuthenticationPage";
 import NearestHelp from "./Components/NearestHelp";
+import MapRedirectButton from "./Components/MapRedirectButton";
 
 function App() {
   // Initialize state, using localStorage if available
@@ -35,6 +36,7 @@ function App() {
         {/* {!false ? <AuthenticationPage /> : <Home  />} */}
         {!Authenticated ? <AuthenticationPage /> : <Home  />}
         {/* <NearestHelp/> */}
+        {/* <MapRedirectButton/> */}
       </StateContext.Provider>
     </> 
   );

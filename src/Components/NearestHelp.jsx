@@ -11,6 +11,30 @@ export default function NearestHelp({ location }) {
   const [animalCor, setAnimalCor] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [coords, setCoords] = useState({ latitude: null, longitude: null });
+
+  useEffect(() => {
+    const geo = navigator.geolocation;
+
+    if (!geo) {
+      console.log('Geolocation is not supported');
+      return;
+    }
+
+    const watcher = geo.watchPosition(
+      (position) => {
+        setCoords({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
+      },
+      (error) => {
+        console.error('Error getting geolocation:', error);
+      }
+    );
+
+    return () => geo.clearWatch(watcher);
+  }, []);
 
   useEffect(() => {
     
@@ -137,7 +161,7 @@ export default function NearestHelp({ location }) {
   useEffect(() => {
     if (coordinateArray.length !== 0 && animalCor.latitude && animalCor.longitude) {
       const newDistances = coordinateArray.map((coord) =>
-        haversine(coord.latitude, coord.longitude, animalCor.latitude, animalCor.longitude)
+        haversine(coord.latitude, coord.longitude, coords.latitude, coords.longitude)
       );
       setDistanceArray(newDistances);
     }
