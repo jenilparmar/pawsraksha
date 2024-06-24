@@ -3,6 +3,7 @@ import "./App.css";
 import StateContext from "./Components/mycontext";
 import Home from "./Components/Home";
 import AuthenticationPage from "./Components/AuthenticationPage";
+import NearestHelp from "./Components/NearestHelp";
 
 function App() {
   // Initialize state, using localStorage if available
@@ -31,7 +32,10 @@ function App() {
       <StateContext.Provider
         value={{ setIsLogin, setAuthenticated, isRescue, isLogin, setIsRescue, setDonate, donate }}
       >
-        {!Authenticated ? <AuthenticationPage /> : <Home  />}
+        {!false ? <AuthenticationPage /> : <Home  />}
+        {/* {!Authenticated ? <AuthenticationPage /> : <Home  />}
+        {!Authenticated ? <AuthenticationPage /> : <Home  />} */}
+        {/* <NearestHelp/> */}
       </StateContext.Provider>
     </> 
   );

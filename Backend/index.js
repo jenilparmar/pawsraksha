@@ -69,6 +69,27 @@ app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
     });
     
 });
+
+app.get("/GetLocationOfOrganization", (req, res) => {
+  db.collection("UserData")
+    .find({})
+    .toArray()
+    .then(data => {
+      let locationArray = [];
+      data.forEach(element => {
+        if (element['Location']) {
+          locationArray.push(element['Location']);
+        }
+      });
+      res.send(locationArray);
+    })
+    .catch(e => {
+      res.send(e);
+    });
+});
+
+
+
 app.post("/PaymentInfo",(req,res)=>{
   const formData = req.body;
   db.collection("Donations")
@@ -105,6 +126,17 @@ app.get("/ShowData",(req,res)=>{
     res.send(e);
   })
 
+})
+app.post("/AddLoginData",(req,res)=>{
+  const formData = req.body;
+  db.collection("UserData")
+  .insertOne(formData)
+  .then(data=>{
+    res.send(data)
+  })
+  .catch(e=>{
+    res.send(e)
+  })
 })
 app.get("/GetOrganizations",(req,res)=>{
   db.collection("UserData")

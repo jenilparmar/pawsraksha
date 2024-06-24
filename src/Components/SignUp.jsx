@@ -30,7 +30,7 @@ export default function SignUp() {
     e.preventDefault(); // Prevent default form submission behavior
 
     // Send form data to the server using Axios
-    axios.post("http://localhost:3001/AddLoginData", formData)
+    axios.post("https://pawsraksha-1.onrender.com/AddLoginData", formData)
       .then((response) => {
         console.log("Form Data Submitted:", response.data);
         // Optionally, handle success or navigate to another page
