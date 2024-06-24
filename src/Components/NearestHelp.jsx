@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function NearestHelp({setNear ,formData }) {
+export default function NearestHelp({setNear ,location }) {
   const [coordinateArray, setCoordinateArray] = useState([]);
   const [locationArray, setLocationArray] = useState([]);
   const [expandedURLs, setExpandedURLs] = useState([]);
@@ -11,8 +11,9 @@ export default function NearestHelp({setNear ,formData }) {
   const [animalCor , setAnimalCor] = useState({})
   useEffect(()=>{
     // alert(formData['location'])
+    console.log(location);
     axios({
-      url: `https://unshorten.me/json/${'https://maps.app.goo.gl/QynWEYsv9sBckN446'}`,
+      url: `https://unshorten.me/json/${location}`,
       method: "GET",
     })
     .then((res) => {

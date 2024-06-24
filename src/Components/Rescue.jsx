@@ -54,7 +54,7 @@ countOfLocation+=countOfLocation+1;
     images.forEach((image) => {
       formDataWithImages.append("images", image);
     });
-    // alert("HI")
+    // setLocation(document.getElementById('#location').value)
     axios({
       url: "https://pawsraksha-1.onrender.com/submitRescueForm",
 
@@ -69,6 +69,7 @@ countOfLocation+=countOfLocation+1;
         console.log(data);
         // Reset form fields after successful submission
         setFormData(initialFormData);
+        setLocation(formDataWithImages.location)
         setImages([]);
         setImagePreviews([]);
         setNear(true)
@@ -180,9 +181,7 @@ countOfLocation+=countOfLocation+1;
                 required
                 value={formData.location}
                 onChange={handleChange}
-                onClick={()=>{
-                  
-                }}
+                
                 />
               <div className="active:text-red-500 text-blue-500 text-sm"     onClick={() => {
                 setLocationGauiderON(true);
