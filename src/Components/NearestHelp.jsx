@@ -1,51 +1,53 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function NearestHelp({setNear ,location }) {
+export default function NearestHelp({ location }) {
   const [coordinateArray, setCoordinateArray] = useState([]);
   const [locationArray, setLocationArray] = useState([]);
   const [expandedURLs, setExpandedURLs] = useState([]);
   const [distanceArray, setDistanceArray] = useState([]);
   const [organization, setOrganization] = useState([]);
   const [nearestHelper, setNearestHelper] = useState([]);
-  const [animalCor , setAnimalCor] = useState({})
-  useEffect(()=>{
-    // alert(location)
-    // console.log(location);
-    axios({
-      url: `https://unshorten.me/json/${location}`,
-      method: "GET",
-    })
-    .then((res) => {
-      if (res.data && res.data.resolved_url) {
-        const expandedUrl = res.data.resolved_url;
-        alert(expandedUrl)
-        setAnimalCor(extractCoordinates(expandedUrl))
-      } else {
-        throw new Error("URL expansion failed");
-      }
-    })
-    .catch((e) => {
-      console.error(e);
-      alert("Failed to expand URL. Please try again.");
-    });
-  },[])
+  const [animalCor, setAnimalCor] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (location) {
+      axios({
+        url: `https://unshorten.me/json/${location}`,
+        method: "GET",
+      })
+        .then((res) => {
+          if (res.data && res.data.resolved_url) {
+            const expandedUrl = res.data.resolved_url;
+            setAnimalCor(extractCoordinates(expandedUrl));
+          } else {
+            throw new Error("URL expansion failed");
+          }
+        })
+        .catch((e) => {
+          console.error(e);
+          setError("Failed to expand URL. Please try again.");
+        });
+    }
+  }, [location]);
+
   const handleLocation = (url) => {
-    axios({
+    return axios({
       url: `https://unshorten.me/json/${url}`,
       method: "GET",
     })
       .then((res) => {
         if (res.data && res.data.resolved_url) {
-          const expandedUrl = res.data.resolved_url;
-          setExpandedURLs((prevURLs) => [...prevURLs, expandedUrl]);
+          return res.data.resolved_url;
         } else {
           throw new Error("URL expansion failed");
         }
       })
       .catch((e) => {
         console.error(e);
-        alert("Failed to expand URL. Please try again.");
+        throw e;
       });
   };
 
@@ -94,22 +96,31 @@ export default function NearestHelp({setNear ,location }) {
   }
 
   const handle = () => {
+    setLoading(true);
+    setError(null);
+
     axios
       .get(`https://pawsraksha-1.onrender.com/GetLocationOfOrganization`)
       .then((res) => {
-        // console.log("Fetched locations:", res.data);
         setLocationArray([...res.data]);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
+        setError("Failed to fetch locations. Please try again.");
+        setLoading(false);
       });
   };
 
   useEffect(() => {
     if (locationArray.length !== 0) {
-      locationArray.forEach((item) => {
-        handleLocation(item);
-      });
+      Promise.all(locationArray.map((item) => handleLocation(item)))
+        .then((urls) => {
+          setExpandedURLs(urls);
+        })
+        .catch((e) => {
+          setError("Failed to expand some URLs. Please try again.");
+          setLoading(false);
+        });
     }
   }, [locationArray]);
 
@@ -123,15 +134,13 @@ export default function NearestHelp({setNear ,location }) {
   }, [expandedURLs]);
 
   useEffect(() => {
-    if (coordinateArray.length !== 0) {
+    if (coordinateArray.length !== 0 && animalCor.latitude && animalCor.longitude) {
       const newDistances = coordinateArray.map((coord) =>
         haversine(coord.latitude, coord.longitude, animalCor.latitude, animalCor.longitude)
       );
-      // console.log("Calculated distances:", newDistances);
       setDistanceArray(newDistances);
-      // console.log("Calculated distances:", newDistances);
     }
-  }, [coordinateArray]);
+  }, [coordinateArray, animalCor]);
 
   useEffect(() => {
     if (distanceArray.length !== 0) {
@@ -145,63 +154,64 @@ export default function NearestHelp({setNear ,location }) {
           }));
           sortedHelpers.sort((a, b) => a.distance - b.distance);
           setNearestHelper(sortedHelpers.filter((helper) => helper.distance <= 10));
+          setLoading(false);
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
+          setError("Failed to fetch organizations. Please try again.");
+          setLoading(false);
         });
     }
   }, [distanceArray]);
 
   return (
- <>
- <center>
- <div className="container mx-auto px-4 py-8">
-  <div className="bg-slate-300 rounded-lg p-4">
-    <div className="w-full my-4 flex flex-col items-center justify-center">
-      <div className="rounded-full w-28 h-28 bg-green-600 flex items-center justify-center">
-        <i className="fa-solid fa-check text-5xl font-bold text-white"></i>
-      </div>
-      <div className="mt-4 max-w-xs text-center text-lg font-semibold">
-        Could you please take the animal to the nearest veterinary hospital?
-      </div>
-    </div>
-    <button
-      className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg w-full text-center mt-4"
-      onClick={handle}
-    >
-      See Nearest Help
-    </button>
-
-    <div className="mt-4">
-      {nearestHelper.map((helper, index) => (
-        <div key={index} className="bg-white rounded-lg shadow-md p-4 mt-4">
-          <p className="text-base font-semibold mb-2">
-            Organization Name: {helper.name}
-          </p>
-          <p className="text-sm text-gray-600">
-            Distance: {helper.distance} km
-          </p>
-          <p className="text-sm text-gray-600">
-            Contact 1: {helper.mobile1}
-          </p>
-          <p className="text-sm text-gray-600">
-            Contact 2: {helper.mobile2}
-          </p>
+    <center>
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-slate-300 rounded-lg p-4">
+          <div className="w-full my-4 flex flex-col items-center justify-center">
+            <div className="rounded-full w-28 h-28 bg-blue-600 flex items-center justify-center">
+              <i className="fa-solid fa-check text-5xl font-bold text-white"></i>
+            </div>
+            <div className="mt-4 max-w-xs text-center text-lg font-semibold">
+              Could you please take the animal to the nearest veterinary hospital?
+            </div>
+          </div>
           <button
-            className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2"
-            onClick={() => {
-              window.open(helper.location); // Assuming helper.location contains the URL
-            }}
+            className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg w-full text-center mt-4"
+            onClick={handle}
+            disabled={loading}
           >
-            Get Location
+            {loading ? "Loading..." : "See Nearest Help"}
           </button>
+          {error && <div className="text-red-500 mt-4">{error}</div>}
+          <div className="mt-4">
+            {nearestHelper.map((helper, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-md p-4 mt-4">
+                <p className="text-base font-semibold mb-2">
+                  Organization Name: {helper.name}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Distance: {helper.distance} km
+                </p>
+                <p className="text-sm text-gray-600">
+                  Contact 1: {helper.mobile1}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Contact 2: {helper.mobile2}
+                </p>
+                <button
+                  className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2"
+                  onClick={() => {
+                    window.open(helper.location); // Assuming helper.location contains the URL
+                  }}
+                >
+                  Get Location
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
-
- </center>
- </>
-  )
+      </div>
+    </center>
+  );
 }
