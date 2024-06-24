@@ -33,8 +33,8 @@ function App() {
         value={{ setIsLogin, setAuthenticated, isRescue, isLogin, setIsRescue, setDonate, donate }}
       >
         {/* {!false ? <AuthenticationPage /> : <Home  />} */}
-        {/* {!Authenticated ? <Authe  nticationPage /> : <Home  />} */}
-        <NearestHelp/>
+        {!Authenticated ? <AuthenticationPage /> : <Home  />}
+        {/* <NearestHelp/> */}
       </StateContext.Provider>
     </> 
   );

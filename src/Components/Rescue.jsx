@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import LocationGuider from "./LocationGuider";
+import NearestHelp from "./NearestHelp";
 
 export default function Rescue() {
   const initialFormData = {
@@ -16,7 +17,9 @@ export default function Rescue() {
   const [formData, setFormData] = useState(initialFormData);
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [location,setLocation] = useState("")
   const [locationGauiderON, setLocationGauiderON] = useState(false);
+  const [near , setNear] = useState(false)
  let countOfLocation = 0;
  useEffect(()=>{
   console.log(countOfLocation);
@@ -47,7 +50,7 @@ countOfLocation+=countOfLocation+1;
     for (const key in formData) {
       formDataWithImages.append(key, formData[key]);
     }
-
+    setLocation(formDataWithImages['location'])
     images.forEach((image) => {
       formDataWithImages.append("images", image);
     });
@@ -68,6 +71,7 @@ countOfLocation+=countOfLocation+1;
         setFormData(initialFormData);
         setImages([]);
         setImagePreviews([]);
+        setNear(true)
       })
       .catch((error) => {
         alert("Sorry for Inconvenience Please fill the Form again!!");
@@ -77,6 +81,7 @@ countOfLocation+=countOfLocation+1;
 
   return (
     <center>
+      {near?<NearestHelp setNear={setNear} formData = {formData}/> : undefined};
       {locationGauiderON && countOfLocation==0 ? <LocationGuider setLocationGauiderON={setLocationGauiderON}/> : undefined}
       <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center">
         <div className="w-9/12 h-9/12 flex flex-col items-center justify-center">
