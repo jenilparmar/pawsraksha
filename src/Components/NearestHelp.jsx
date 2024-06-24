@@ -188,7 +188,15 @@ export default function NearestHelp({ location }) {
         });
     }
   }, [distanceArray]);
-
+  const GoToLocation=(name)=>{
+    axios.get(`https://pawsraksha-1.onrender.com/OrgLocation/${name}`)
+    .then(res=>{
+      window.open(res.data)
+    })
+    .catch(e=>{
+     alert("Sorry unable to redirect to location!!")
+    })
+  }
   return (
     <center>
       <div className="container mx-auto px-4 py-8">
@@ -227,8 +235,7 @@ export default function NearestHelp({ location }) {
                 <button
                   className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2"
                   onClick={() => {
-                    // alert(helper.location)
-                 // Assuming helper.location contains the URL
+                    GoToLocation(helper.name)
                   }}
                 >
                   Get Location

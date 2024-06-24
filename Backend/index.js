@@ -48,6 +48,17 @@ app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
 });
 
+app.get("/OrgLocation/:name",(req,res)=>{
+  const name = req.params.name
+  db.collection("UserData")
+  .findOne({name:name})
+  .then(data=>{
+    res.send(data["Location"])
+  })
+  .catch(e=>{
+    res.send(e)
+  })
+})
 // Route to handle form submission with multiple images
 app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
   const formData = req.body;
