@@ -13,6 +13,7 @@ export default function NearestHelp({ location }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    
     if (location) {
       axios({
         url: `https://unshorten.me/json/${location}`,
@@ -181,9 +182,9 @@ export default function NearestHelp({ location }) {
             onClick={handle}
             disabled={loading}
           >
-            {loading ? "Loading..." : "See Nearest Help"}
+            "See Nearest Help"
           </button>
-          {error && <div className="text-red-500 mt-4">{error}</div>}
+         
           <div className="mt-4">
             {nearestHelper.map((helper, index) => (
               <div key={index} className="bg-white rounded-lg shadow-md p-4 mt-4">
@@ -202,7 +203,8 @@ export default function NearestHelp({ location }) {
                 <button
                   className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg mt-2"
                   onClick={() => {
-                    window.open(helper.location); // Assuming helper.location contains the URL
+                    // alert(helper.location)
+                 // Assuming helper.location contains the URL
                   }}
                 >
                   Get Location

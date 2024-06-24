@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",'https://pawsraksha.vercel.app' // Allow requests from React app running on localhost:3000
+      "http://localhost:3000",'https://pawsraksha.vercel.app',"192.168.130.141:3000" // Allow requests from React app running on localhost:3000
     ],
     methods: ["POST", "GET"],
     credentials: true,
