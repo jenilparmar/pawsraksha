@@ -13,7 +13,7 @@ export default function NearestHelp({setNear ,location }) {
     // alert(formData['location'])
     console.log(location);
     axios({
-      url: `https://unshorten.me/json/${location}`,
+      url: `https://unshorten.me/json/${'https://maps.app.goo.gl/mHNHYJR5PdRGxLMW6'}`,
       method: "GET",
     })
     .then((res) => {
@@ -202,5 +202,5 @@ export default function NearestHelp({setNear ,location }) {
 
  </center>
  </>
-  );
+  )
 }
