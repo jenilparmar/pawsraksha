@@ -37,20 +37,28 @@ export default function Main({setDeshBoard}) {
         <div className="flex flex-col gap-6 md:flex-row md:justify-center">
      
           <div className="w-80 h-40 flex flex-col justify-center bg-gray-200 rounded-lg shadow-md p-4">
-            <div className="text-4xl md:text-6xl font-bold text-center">
+           {goodHumans?
+            <>
+             <div className="text-4xl md:text-6xl font-bold text-center">
               {goodHumans}
             </div>
             <div className="text-xl md:text-2xl font-semibold text-center">
             Superhero Users
             </div>
+            </>:"Loading..."
+           }
           </div>
           <div className="w-80 h-40 flex flex-col justify-center bg-gray-200 rounded-lg shadow-md p-4">
-            <div className="text-4xl md:text-6xl font-bold text-center">
+           {organizationCount?
+            <>
+             <div className="text-4xl md:text-6xl font-bold text-center">
               {organizationCount}
             </div>
             <div className="text-xl md:text-2xl font-semibold text-center">
               Helping Organizations
             </div>
+            </>:"Loading..."
+           }
           </div>
 
         </div>
@@ -63,7 +71,7 @@ export default function Main({setDeshBoard}) {
           details about the animal's condition and location. Your contribution
           can make a huge difference!
         </p>
-        <div className="button bg-blue-400 my-4 border-2 border-black hover:bg-blue-500 cursor-pointer self-center text-center font-semibold p-2 rounded-lg text-black w-40 mx-auto">
+        <div className="button bg-blue-400 my-4 hover:bg-blue-500 cursor-pointer self-center text-center font-semibold p-2 rounded-lg text-black w-40 mx-auto">
           <button
             onClick={() => {
               setIsRescue(true);
