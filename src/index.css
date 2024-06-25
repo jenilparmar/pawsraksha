@@ -2,43 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
-.cat{
+.cat {
     background-image: url(https://iili.io/d9dowp1.png);
     background-size: cover;
     background-position: center;
     width: 20vw;
+    display: none;
     height: 20vh;
     position: absolute;
     top: 1%;
     left: 40%;
 }
-/* Chrome, Edge and Safari */
+
+/* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
     height: 10px;
     width: 10px;
-  }
-  *::-webkit-scrollbar-track {
+}
+*::-webkit-scrollbar-track {
     border-radius: 5px;
     background-color: #DFE9EB;
-  }
-  
-  *::-webkit-scrollbar-track:hover {
+}
+
+*::-webkit-scrollbar-track:hover {
     background-color: #BEC6C8;
-  }
-  
-  *::-webkit-scrollbar-track:active {
+}
+
+*::-webkit-scrollbar-track:active {
     background-color: #B8C0C2;
-  }
-  
-  *::-webkit-scrollbar-thumb {
+}
+
+*::-webkit-scrollbar-thumb {
     border-radius: 18px;
     background-color: #60A5FA;
-  }
-  
-  *::-webkit-scrollbar-thumb:hover {
+}
+
+*::-webkit-scrollbar-thumb:hover {
     background-color: #528DD5;
-  }
-  
-  *::-webkit-scrollbar-thumb:active {
+}
+
+*::-webkit-scrollbar-thumb:active {
     background-color: #528DD5;
-  }
+}
+
+.spinner {
+    width: 70.4px;
+    height: 70.4px;
+    --clr: rgb(0, 187, 255);
+    --clr-alpha: transparent;
+    animation: spinner 1.6s infinite ease;
+    transform-style: preserve-3d;
+    margin: auto;
+}
+
+.spinner > div {
+    background-color: var(--clr-alpha);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    border: 3.5px solid var(--clr);
+}
+
+.spinner div:nth-of-type(1) {
+    transform: translateZ(-35.2px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+    transform: rotateY(-270deg) translateX(50%);
+    transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+    transform: rotateY(270deg) translateX(-50%);
+    transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+    transform: rotateX(90deg) translateY(-50%);
+    transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+    transform: rotateX(-90deg) translateY(50%);
+    transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+    transform: translateZ(35.2px);
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+    }
+
+    50% {
+        transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+    }
+
+    100% {
+        transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+    .cat {
+        display: none;
+        width: 40vw;
+        height: 30vh;
+        top: 5%;
+        left: 30%;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+    }
+
+    .spinner > div {
+        border: 2.5px solid var(--clr);
+    }
+}

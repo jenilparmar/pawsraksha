@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import NearestHelp from "./NearestHelp";
+import Loader from "./Loader";
+import StateContext from "./mycontext";
 
 export default function Rescue() {
   const initialFormData = {
     animalType: "cat",
     description: "",
-
     contactName: "",
     contactPhone: "",
     notes: "",
@@ -16,6 +17,7 @@ export default function Rescue() {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [near, setNear] = useState(false);
+  const [loading, setLoading] = useState(false); // Correct initialization of loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +40,7 @@ export default function Rescue() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setLoading(true); // Set loading to true when form submission starts
     const formDataWithImages = new FormData();
     for (const key in formData) {
       formDataWithImages.append(key, formData[key]);
@@ -60,19 +63,30 @@ export default function Rescue() {
         setFormData(initialFormData);
         setImages([]);
         setImagePreviews([]);
-        setNear(true);
+        setLoading(false); // Set loading to false when form submission completes
+        setNear(true); // Set near to true when form submission completes
       })
       .catch((error) => {
+        setLoading(false); // Set loading to false in case of an error
         alert("Sorry for the inconvenience. Please fill the form again!");
       });
   };
+  const { setIsRescue } = useContext(StateContext);
+  // useContext(StateContext)
 
   return (
     <center>
-      {near ? (
+      {loading ? ( // Render Loader component when loading is true
+        <Loader />
+      ) : near ? ( // Render NearestHelp component when near is true
         <NearestHelp setNear={setNear} />
       ) : (
         <div className="w-10/12 h-fit bg-slate-200 flex flex-col items-center p-4">
+          <i
+          className="fa-solid fa-xmark text-gray-700 relative left-36 top-5 text-xl  lg:right-96"
+          onClick={() => {
+            setIsRescue(false)
+          }}></i>
           <div className="w-9/12 flex flex-col items-center">
             <p className="font-semibold p-3 w-full text-sm text-red-600">
               Please upload a photo of the injured animal and include a picture of

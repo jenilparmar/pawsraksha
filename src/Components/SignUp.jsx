@@ -125,7 +125,7 @@ export default function SignUp() {
             <span
               className="text-blue-500 hover:text-blue-600 hover:cursor-pointer"
               onClick={() => {
-                setIsLogin(true);
+                setIsLogin(false);
               }}
             >
               Log In

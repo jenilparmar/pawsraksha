@@ -7,7 +7,7 @@ export default function AuthenticationPage() {
 const {isLogin} = useContext(StateContext)
   return (
        <>
-        {isLogin ? <Login /> : <SignUp />} 
+        {isLogin ?  <SignUp />:<Login /> } 
        </>
   )
 }

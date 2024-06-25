@@ -81,7 +81,7 @@ export default function Donation() {
           Donate Now
         </h1>
         <i
-          className="fa-solid fa-xmark text-gray-700 absolute top-16 text-xl right-5 lg:right-96"
+          className="fa-solid fa-xmark text-gray-700 relative -top-14 text-xl left-72 lg:right-96"
           onClick={() => {
             setDonate(true);
           }}></i>
@@ -186,7 +186,7 @@ export default function Donation() {
             <button
               className="block w-full py-2 my-2 px-4 mb-4 leading-tight bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md focus:outline-none focus:bg-blue-600 "
               onClick={() => {
-                // window.location.href = "https://pawsraksha.vercel.app/";
+                window.location.href = "https://pawsraksha.vercel.app/";
                 handleSubmit();
               }}>
               Go to Home

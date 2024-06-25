@@ -214,22 +214,22 @@ export default function NearestHelp({ location }) {
             onClick={handle}
             disabled={loading}
           >
-            "See Nearest Help"
+            See Nearest Help
           </button>
          
           <div className="mt-4">
             {nearestHelper.map((helper, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-4 mt-4">
-                <p className="text-base font-semibold mb-2">
+              <div key={index} className="bg-white rounded-lg shadow-md p-4 mt-4 flex flex-col justify-start">
+                <p className="text-base font-semibold mb-2 self-start">
                   Organization Name: {helper.name}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm  font-semibold self-start">
                   Distance: {helper.distance} km
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm  font-semibold self-start">
                   Contact 1: {helper.mobile1}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm  font-semibold self-start">
                   Contact 2: {helper.mobile2}
                 </p>
                 <button

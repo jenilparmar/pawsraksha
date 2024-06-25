@@ -6,7 +6,7 @@ export default function Login() {
 
   return (
     <>
-      <div className="cat"></div>
+      {/* <div className="cat"></div> */}
       <center className="min-h-screen w-screen bg-slate-100 flex flex-col justify-center items-center px-4">
         <div className="w-full max-w-xs md:max-w-sm bg-slate-200 z-10 flex flex-col justify-around gap-3 rounded-md border-2 border-blue-400 p-4 shadow-md">
           <div className="text-2xl font-bold mb-4 text-center">Login</div>
@@ -32,7 +32,7 @@ export default function Login() {
             <span
               className="text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               onClick={() => {
-                setIsLogin(false);
+                setIsLogin(true);
               }}
             >
               Signup
