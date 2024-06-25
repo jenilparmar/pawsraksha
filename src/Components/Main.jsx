@@ -45,7 +45,9 @@ export default function Main({setDeshBoard}) {
             <div className="text-xl md:text-2xl font-semibold text-center">
             Superhero Users
             </div>
-            </>:"Loading..."
+            </>:<>
+            <div className="font-bold text-2xl">Loading...</div>
+            </>
            }
           </div>
           <div className="w-80 h-40 flex flex-col justify-center bg-gray-200 rounded-lg shadow-md p-4">
@@ -57,7 +59,9 @@ export default function Main({setDeshBoard}) {
             <div className="text-xl md:text-2xl font-semibold text-center">
               Helping Organizations
             </div>
-            </>:"Loading..."
+            </>:<>
+            <div className="font-bold text-2xl">Loading...</div>
+            </>
            }
           </div>
 
