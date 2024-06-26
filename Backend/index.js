@@ -47,6 +47,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
 });
+app.get("/Count", (req, res) => {
+  db.collection("Count")
+    .findOneAndUpdate(
+      {}, // Assuming there is only one document and no filter is required
+      { $inc: { count: 1 } }, // Increment the count by 1
+      { returnDocument: 'after' } // Return the updated document
+    )
+    .then(result => {
+      res.send(result.value); // Send the updated document
+    })
+    .catch(e => {
+      res.status(500).send(e); // Send the error with a 500 status code
+    });
+});
 
 app.get("/OrgLocation/:name",(req,res)=>{
   const name = req.params.name

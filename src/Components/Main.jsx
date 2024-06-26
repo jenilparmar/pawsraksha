@@ -6,7 +6,15 @@ export default function Main({setDeshBoard}) {
   const [goodHumans, setGoodHumans] = useState(0);
   const [organizationCount, setOrganizationCount] = useState(0);
   // const [donate, setDonate] = useState(0);
-
+  const handleCount=()=>{
+    axios.get("https://pawsraksha-1.onrender.com/Count")
+    .then(res=>{
+      console.log(res.data);
+    })
+    .catch((e)=>{
+      console.log(e);
+    })
+  }
   useEffect(() => {
     fetchData();
   }, []);
@@ -79,6 +87,7 @@ export default function Main({setDeshBoard}) {
           <button
             onClick={() => {
               setIsRescue(true);
+              handleCount();
             }}
           >
             Rescue Animal
