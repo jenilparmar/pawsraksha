@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
 app.get("/Count", (req, res) => {
   db.collection("Count")
     .findOneAndUpdate(
-      {}, // Assuming there is only one document and no filter is required
+      {count}, // Assuming there is only one document and no filter is required
       { $inc: { count: 1 } }, // Increment the count by 1
       { returnDocument: 'after' } // Return the updated document
     )
