@@ -13,10 +13,10 @@ let db;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Destination folder for storing uploaded images
+    cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Unique filename for each uploaded image
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 const url  = process.env.url;
@@ -29,12 +29,11 @@ MongoClient.connect(url).then((client) => {
 console.log(e);
 });
 
-// Middleware
 app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",'https://pawsraksha.vercel.app',"192.168.130.141:3000" // Allow requests from React app running on localhost:3000
+      "http://localhost:3000",'https://pawsraksha.vercel.app',"192.168.130.141:3000"
     ],
     methods: ["POST", "GET"],
     credentials: true,
@@ -43,22 +42,21 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Sample route to verify server is running
 app.get("/", (req, res) => {
   res.send("<h1>Server is running</h1>");
 });
 app.get("/Count", (req, res) => {
   db.collection("Count")
     .findOneAndUpdate(
-      {count}, // Assuming there is only one document and no filter is required
-      { $inc: { count: 1 } }, // Increment the count by 1
-      { returnDocument: 'after' } // Return the updated document
+      {count},
+      { $inc: { count: 1 } },
+      { returnDocument: 'after' }
     )
     .then(result => {
-      res.send(result.value); // Send the updated document
+      res.send(result.value);
     })
     .catch(e => {
-      res.status(500).send(e); // Send the error with a 500 status code
+      res.status(500).send(e);
     });
 });
 
@@ -73,7 +71,7 @@ app.get("/OrgLocation/:name",(req,res)=>{
     res.send(e)
   })
 })
-// Route to handle form submission with multiple images
+
 app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
   const formData = req.body;
   const images = req.files.map((file) => ({
@@ -92,7 +90,6 @@ app.post("/submitRescueForm", upload.array("images", 5), (req, res) => {
       console.error(error);
       res.status(500).send(error);
     });
-    
 });
 
 app.get("/GetLocationOfOrganization", (req, res) => {
@@ -113,8 +110,6 @@ app.get("/GetLocationOfOrganization", (req, res) => {
     });
 });
 
-
-
 app.post("/PaymentInfo",(req,res)=>{
   const formData = req.body;
   db.collection("Donations")
@@ -126,6 +121,7 @@ app.post("/PaymentInfo",(req,res)=>{
     res.send(e)
   })
 })
+
 app.get("/GetDonators",(req,res)=>{
   db.collection("Donations")
   .find({})
@@ -137,11 +133,12 @@ app.get("/GetDonators",(req,res)=>{
     res.send(e);
   })
 })
+
 app.get("/env",(req,res)=>{
   res.send(process.env.UPIID);
 })
-app.get("/ShowData",(req,res)=>{
 
+app.get("/ShowData",(req,res)=>{
   db.collection("AnimalInNeed")
   .find({}).toArray()
   .then((data)=>{
@@ -150,8 +147,8 @@ app.get("/ShowData",(req,res)=>{
   .catch(e=>{
     res.send(e);
   })
-
 })
+
 app.post("/AddLoginData",(req,res)=>{
   const formData = req.body;
   db.collection("UserData")
@@ -163,6 +160,7 @@ app.post("/AddLoginData",(req,res)=>{
     res.send(e)
   })
 })
+
 app.get("/GetOrganizations",(req,res)=>{
   db.collection("UserData")
   .find({})
@@ -174,7 +172,45 @@ app.get("/GetOrganizations",(req,res)=>{
     res.send(e);
   })
 })
-// Start the server
+
+app.post("/chat", async (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: "OPENAI_API_KEY not configured" });
+  }
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant for PawsRaksha, an animal rescue platform. Answer briefly about animal rescue, donations, and using the app.",
+          },
+          { role: "user", content: message },
+        ],
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return res.status(500).json({ error: data.error?.message || "LLM request failed" });
+    }
+    const reply = data.choices?.[0]?.message?.content || "No response";
+    res.json({ reply });
+  } catch (error) {
+    res.status(500).json({ error: "Chat failed" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
